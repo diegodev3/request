@@ -387,7 +387,7 @@ Request.prototype.init = function (options) {
     self.setHeader('accept-encoding', 'gzip, deflate')
   }
 
-  if (self.uri.auth && !self.hasHeader('authorization')) {
+  if (self.uri.auth && !self.hasHeader('Authorization')) {
     var uriAuthPieces = self.uri.auth.split(':').map(function (item) { return self._qs.unescape(item) })
     self.auth(uriAuthPieces[0], uriAuthPieces.slice(1).join(':'), true)
   }
@@ -444,7 +444,7 @@ Request.prototype.init = function (options) {
 
   if (options.oauth) {
     self.oauth(options.oauth)
-  } else if (self._oauth.params && self.hasHeader('authorization')) {
+  } else if (self._oauth.params && self.hasHeader('Authorization')) {
     self.oauth(self._oauth.params)
   }
 
@@ -1367,7 +1367,7 @@ Request.prototype.aws = function (opts, now) {
       secretAccessKey: opts.secret,
       sessionToken: opts.session
     })
-    self.setHeader('authorization', signRes.headers.Authorization)
+    self.setHeader('Authorization', signRes.headers.Authorization)
     self.setHeader('x-amz-date', signRes.headers['X-Amz-Date'])
     if (signRes.headers['X-Amz-Security-Token']) {
       self.setHeader('x-amz-security-token', signRes.headers['X-Amz-Security-Token'])
@@ -1396,7 +1396,7 @@ Request.prototype.aws = function (opts, now) {
       auth.resource = '/'
     }
     auth.resource = aws2.canonicalizeResource(auth.resource)
-    self.setHeader('authorization', aws2.authorization(auth))
+    self.setHeader('Authorization', aws2.authorization(auth))
   }
 
   return self
@@ -1413,7 +1413,7 @@ Request.prototype.httpSignature = function (opts) {
     method: self.method,
     path: self.path
   }, opts)
-  debug('httpSignature authorization', self.getHeader('authorization'))
+  debug('httpSignature authorization', self.getHeader('Authorization'))
 
   return self
 }
